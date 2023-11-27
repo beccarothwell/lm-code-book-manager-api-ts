@@ -145,4 +145,15 @@ describe("DELETE /api/v1/books/{bookId} endpoint", () => {
 		// Assert
 		expect(res.statusCode).toEqual(200);
 	});
+
+	test("controller successfully returns success message as JSON", async () => {
+		// Arrange
+		jest.spyOn(bookService, "deleteBook").mockResolvedValue(1);
+
+		// Act
+		const res = await request(app).delete("/api/v1/books/2");
+
+		// Assert
+		expect(res.body).toEqual("bookId: 2 deleted.");
+	});
 });
