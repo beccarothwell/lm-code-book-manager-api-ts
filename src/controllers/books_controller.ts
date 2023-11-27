@@ -40,5 +40,7 @@ export const deleteBook = async (req: Request, res: Response) => {
 	const bookId = Number.parseInt(req.params.bookId);
 
 	const book = await bookService.deleteBook(bookId);
-	res.status(200).json(`bookId: ${bookId} deleted.`);
+	book
+		? res.status(200).json(`bookId: ${bookId} deleted.`)
+		: res.status(404).json("Not found");
 };
