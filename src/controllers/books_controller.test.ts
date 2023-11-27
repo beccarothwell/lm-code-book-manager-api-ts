@@ -172,4 +172,17 @@ describe("DELETE /api/v1/books/{bookId} endpoint", () => {
 		// Assert
 		expect(res.statusCode).toEqual(404);
 	});
+
+	test("status code 400 when no bookId endpoint provided", async () => {
+		// Arrange - we can enforce throwing an exception by mocking the implementation
+		jest.spyOn(bookService, "deleteBook").mockImplementation(() => {
+			throw new Error("Error saving book");
+		});
+
+		// Act
+		const res = await request(app).delete("/api/v1/books/a"); // No bookId
+
+		// Assert
+		expect(res.statusCode).toEqual(400);
+	});
 });
