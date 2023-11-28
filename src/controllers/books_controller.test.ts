@@ -109,10 +109,23 @@ describe("GET /api/v1/books/{bookId} endpoint", () => {
 
 describe("POST /api/v1/books endpoint", () => {
 	test("status code successfully 201 for saving a valid book", async () => {
+		// Arrange
+		jest.spyOn(bookService, "saveBook").mockResolvedValue({
+			bookId: 3,
+			title: "Fantastic Mr. Fox",
+			author: "Roald Dahl",
+			description:
+				"A wiley and clever fox feeds his family by stealing from three mean farmers.",
+		} as Book);
+
 		// Act
-		const res = await request(app)
-			.post("/api/v1/books")
-			.send({ bookId: 3, title: "Fantastic Mr. Fox", author: "Roald Dahl" });
+		const res = await request(app).post("/api/v1/books").send({
+			bookId: 3,
+			title: "Fantastic Mr. Fox",
+			author: "Roald Dahl",
+			description:
+				"A wiley and clever fox feeds his family by stealing from three mean farmers.",
+		});
 
 		// Assert
 		expect(res.statusCode).toEqual(201);
@@ -127,7 +140,7 @@ describe("POST /api/v1/books endpoint", () => {
 		// Act
 		const res = await request(app)
 			.post("/api/v1/books")
-			.send({ title: "Fantastic Mr. Fox", author: "Roald Dahl" }); // No bookId
+			.send({ title: "Fantastic Mr. Fox", author: "Roald Dahl" }); // No bookId or description
 
 		// Assert
 		expect(res.statusCode).toEqual(400);
