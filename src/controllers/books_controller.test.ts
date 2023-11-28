@@ -131,6 +131,35 @@ describe("POST /api/v1/books endpoint", () => {
 		expect(res.statusCode).toEqual(201);
 	});
 
+	test("book returned in response body when saving a valid book", async () => {
+		// Arrange
+		jest.spyOn(bookService, "saveBook").mockResolvedValue({
+			bookId: 3,
+			title: "Fantastic Mr. Fox",
+			author: "Roald Dahl",
+			description:
+				"A wiley and clever fox feeds his family by stealing from three mean farmers.",
+		} as Book);
+
+		// Act
+		const res = await request(app).post("/api/v1/books").send({
+			bookId: 3,
+			title: "Fantastic Mr. Fox",
+			author: "Roald Dahl",
+			description:
+				"A wiley and clever fox feeds his family by stealing from three mean farmers.",
+		});
+
+		// Assert
+		expect(res.body).toEqual({
+			bookId: 3,
+			title: "Fantastic Mr. Fox",
+			author: "Roald Dahl",
+			description:
+				"A wiley and clever fox feeds his family by stealing from three mean farmers.",
+		});
+	});
+
 	test("status code 400 when saving ill formatted JSON", async () => {
 		// Arrange - we can enforce throwing an exception by mocking the implementation
 		jest.spyOn(bookService, "saveBook").mockImplementation(() => {
